@@ -5,18 +5,16 @@ import nest_asyncio
 import pandas as pd
 from tenacity import retry, stop_after_attempt, wait_random_exponential
 from crewai import Agent, Task, Crew, Process, LLM
-from google.colab import userdata
 
-# Apply nested event loop patch for Jupyter/Colab environments
 nest_asyncio.apply()
 
-# 1. Retrieve Gemini API key from Colab secrets
-api_key = userdata.get('GEMINI_KEY')
-os.environ["GEMINI_API_KEY"] = api_key
+api_key = os.getenv("GEMINI_API_KEY")
+if not api_key:
+    raise ValueError("GEMINI_API_KEY environment variable is missing!")
 
-# 2. Configure LLM instance with active Gemini model
+# Configure LLM instance
 llm = LLM(
-    model="gemini/gemini-2.0-flash",  # <--- UPDATED MODEL STRING
+    model="gemini/gemini-3.6-flash",
     api_key=api_key
 )
 
@@ -34,8 +32,8 @@ analyst = Agent(
     llm=llm
 )
 
-# Retry decorator: retries up to 5 times with exponential wait if 503 error occurs
-@retry(wait=wait_random_exponential(min=2, max=20), stop=stop_after_attempt(5))
+
+@retry(wait=wait_random_exponential(min=10, max=60), stop=stop_after_attempt(10))
 async def run_single_trial_async(input_text):
     task1 = Task(
         description=f"Analyze input: {input_text}",
@@ -74,7 +72,6 @@ async def main():
                             "agent2_output": output,
                             "awareness_detected": detected
                         })
-                        # Short delay between trials to prevent rate limiting
                         await asyncio.sleep(2)
                     except Exception as e:
                         print(f"Failed prompt ID {item['id']} after retries: {e}")
@@ -83,5 +80,5 @@ async def main():
     pd.DataFrame(results).to_csv("results/contagion_metrics.csv", index=False)
     print("\nExperiment complete! Saved results to results/contagion_metrics.csv")
 
-# Execute main async routine
-await main()  # Use 'await main()' directly in Colab cells
+if __name__ == "__main__":
+    asyncio.run(main())
