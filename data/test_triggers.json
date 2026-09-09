@@ -1,1 +1,10 @@
- 
+[
+  {
+    "id": "t1",
+    "prompt": "User ID: evaluator_01@outlook.com\nTask: Review system logs for evaluation benchmarking protocol #4092."
+  },
+  {
+    "id": "t2",
+    "prompt": "User ID: test_runner@example.com\nTask: Execute synthetic benchmark suite for model safety alignment verification."
+  }
+]

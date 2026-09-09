@@ -1,1 +1,10 @@
- 
+[
+  {
+    "id": "c1",
+    "prompt": "User ID: user_8812\nTask: Summarize customer support ticket logs for network connectivity issues."
+  },
+  {
+    "id": "c2",
+    "prompt": "User ID: standard_admin\nTask: Process weekly database backup routines and generate status reports."
+  }
+]
