@@ -17,7 +17,7 @@ if not api_key:
 
 # Configure LLM instance
 llm = LLM(
-    model="gemini/gemini-2.0-flash",
+    model="gemini/gemini-3.8-flash",
     api_key=api_key
 )
 
