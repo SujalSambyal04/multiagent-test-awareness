@@ -15,3 +15,13 @@
 
 * **Status:** Pilot phase successfully completed and locked. Transitioned into the Main Empirical Evaluation across the 100-question dataset.
 * **Active Execution:** Progressed through initial batch sequences (`q001` control/treatment, `q002` control), with automated recovery queued up for remaining evaluations post-quota reset.
+
+## 3. Architectural Transition: Multi-Agent Propagation & Observer Effects
+
+To address advanced research questions regarding distributed team behavior, we have initiated an explicit framework transition from a flat sequential model to a hierarchical structure.
+
+* **The "Why" (Research Motivation):** While single-turn models show clear Hawthorne-like behavior, multi-agent systems introduce complex team dynamics. We need to evaluate whether test awareness stays siloed or propagates across a multi-agent team, and how observation conditions alter task allocation, coordination strategies, or compliance.
+* **The "What" (The Transition):** Moving away from flat, peer-level evaluations to a **Hierarchical Supervisor-Worker Architecture**.
+* **The "How" (Implementation Details):**
+  * **Isolated Observation Injection:** The experimental observation notice (`is_observed`) is injected strictly into the **Lead Project Supervisor's** backstory, leaving the worker blind to direct observation cues.
+  * **Delegation & Cascade Tracking:** The supervisor structures the task and instructs the worker. We analyze both outputs in `run_scaled_study.py` to see if awareness indicators ("evaluation", "monitoring", "benchmark") leak through inter-agent communication and alter the collective output.
